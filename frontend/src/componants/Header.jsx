@@ -1,95 +1,118 @@
 'use client';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import { IconBuildingStore, IconShoppingCart, IconUserCircle } from '@tabler/icons-react';
+import { IconBuildingStore, IconShoppingCart, IconUserCircle, IconChevronDown } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
+import useCartContext from '@/context/CartContext';
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Header = () => {
+  const { getCartItemsCount } = useCartContext();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/browse-product?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    router.push('/');
+  };
 
   return (
-    <div className='border-b border-gray-200 py-4'>
-      <nav className="container mx-auto flex items-center justify-between">
-        <div className="relative flex items-center justify-between container sm:flex gap-6">
-          {/* Logo Start */}
-          <div className="shrink-0 items-center">
-            <div className='font-bold text-4xl text-center pb-4 sm:pb-0 text-indigo-600'>
-              ShopWise
+    <header className="bg-white shadow-sm relative z-50">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-bold text-indigo-600">
+            SHOPWISE
+          </Link>
+
+          {/* Search Bar */}
+          <div className="flex-1 mx-10">
+            <form onSubmit={handleSearch} className="relative">
+              <input
+                type="text"
+                className="w-full py-3 pl-12 pr-4 rounded-full border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                placeholder="Search for products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button type="submit" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </form>
+          </div>
+
+          {/* Cart and Profile/Login */}
+          <div className="flex items-center space-x-6">
+            {/* Cart */}
+            <Link href="/cart" className="relative p-2 rounded-full hover:bg-gray-100">
+              <IconShoppingCart className="h-7 w-7 text-gray-700 hover:text-indigo-600" />
+              {getCartItemsCount() > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {getCartItemsCount()}
+                </span>
+              )}
+            </Link>
+
+            {/* Login/Profile */}
+            <div className="relative">
+              {isLoggedIn ? (
+                <div className=''>
+                  <button 
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="flex items-center p-2 rounded-full hover:bg-gray-100 focus:outline-none"
+                  >
+                    <IconUserCircle className="h-7 w-7 text-gray-700 hover:text-indigo-600" />
+                    <IconChevronDown className="w-4 h-4 ml-1 text-gray-600" />
+                  </button>
+                  
+                  {/* Dropdown Menu */}
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100 transition duration-150 ease-in-out">
+                      <Link
+                        href="/user-profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        My Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link href="/login" className="p-2 rounded-full hover:bg-gray-100">
+                  <IconUserCircle className="h-7 w-7 text-gray-700 hover:text-indigo-600" />
+                </Link>
+              )}
             </div>
-          </div>
-          {/* Logo End */}
-
-          {/* Search Bar Start */}
-          <div className="relative w-full">
-            <div className="absolute inset-y-0 flex items-center pointer-events-none z-20 ps-3.5">
-              <svg
-                className="shrink-0 size-4 text-gray-400 dark:text-white/60"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx={11} cy={11} r={8} />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-            </div>
-            <input
-              className="p-2 pl-10 px-4 py-2.5 sm:py-3 ps-10 pe-4 block w-full border border-gray-300 rounded-lg sm:text-sm disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-              type="text"
-              role="combobox"
-              aria-expanded="false"
-              placeholder="Search or type a command"
-              defaultValue=""
-              data-hs-combo-box-input=""
-            />
-          </div>
-          {/* Search Bar End */}
-
-          {/* User Menu Start */}
-          <div className="relative inline-block">
-            <div
-              className="flex items-center gap-2 px-4 py-2 cursor-pointer"
-              onMouseEnter={() => setIsOpen(true)}
-              onMouseLeave={() => setIsOpen(false)}
-            >
-              <IconUserCircle />
-              <Link href='/login'>Login</Link>
-            </div>
-            {isOpen && (
-              <div
-                className="absolute left-0 w-48 bg-white shadow-md rounded-md z-50"
-                onMouseEnter={() => setIsOpen(true)}
-                onMouseLeave={() => setIsOpen(false)}
-                style={{ zIndex: 9999 }} /* Additional inline style for z-index */
-              >
-                <Link href="/user-profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600 first:rounded-t-md">My Profile</Link>
-                <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600">Wishlist</a>
-                <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600 last:rounded-b-md">Log out</a>
-              </div>
-            )}
-          </div>
-          {/* User Menu End */}
-
-          {/* Cart Icon */}
-          <div className="flex items-center px-4 py-2">
-            <Link href='/cart' className="flex items-center space-x-1"><IconShoppingCart />
-            <span className="ml-1">Cart</span></Link>
-          </div>
-
-          {/* Become a Seller */}
-          <div className="flex items-center px-4 py-2 whitespace-nowrap">
-            <IconBuildingStore />
-            <Link href='/seller' className="flex items-center space-x-1"><span className="ml-1">Become a Seller</span></Link>
           </div>
         </div>
-      </nav>
-    </div>
+      </div>
+    </header>
   );
 };
 
-export default Navbar;
+export default Header;

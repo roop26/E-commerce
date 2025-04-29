@@ -1,6 +1,7 @@
 const express = require('express');
-const Model = require('../models/reviewModel');
+const Model = require('../models/paydetailModel');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 router.post('/add', (req, res) => {
     console.log(req.body);
@@ -14,8 +15,6 @@ router.post('/add', (req, res) => {
             res.status(500).json(err);
         });
 });
-
-// getall 
 router.get('/getall', (req,res) => {
     
     Model.find()
@@ -28,30 +27,28 @@ router.get('/getall', (req,res) => {
     });
 
 });
+router.post('/create-order', (req,res) => {
 
-// update
-router.put('/update/:id', (req, res) => {
-    Model.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    
+    Model.find()({orderId: req.body.orderId})
     .then((result) => {
         res.status(200).json(result);
     }).catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
+      console.log(err);
+      res.status(500).json(err);
+        
+    })
+    .then((result) => {
+        res.status(200).json(result);
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+        
     });
+
 });
 
 
-// delete
-router.get('/delete/:id', (req, res) => {
-   Model.findByIdAndDelete(req.params.id)
-        .then((result) => {
-            res.status(200).json(err);
-        }).catch((err) => {
-          console.log(err);
-          res.status(500).json(err);
-            
-        });
-});
 
 
 module.exports = router;

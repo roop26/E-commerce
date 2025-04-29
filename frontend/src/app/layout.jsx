@@ -1,9 +1,13 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../componants/Header";
 import Navbar from "@/componants/Navbar";
 import Footer from "@/componants/Footer";
+import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WishlistContext";
+import { AppProvider } from "@/context/appcontext";
 
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",
@@ -13,8 +17,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        {children}
+      <body className={inter.className}>
+        <AppProvider>
+        <WishlistProvider>
+          <CartProvider>
+            {children}
+          </CartProvider>
+        </WishlistProvider>
+        </AppProvider>
       </body>
     </html>
   );

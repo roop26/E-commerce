@@ -51,6 +51,19 @@ const ProductDetailsPage = () => {
 
      // const [preview, setPreview] = useState('');
 
+//      axios.post('http://localhost:5000/review/add', value)
+//      .then(res => {
+//        toast.success('User registered successfully')
+//        resetForm();
+//      })
+//      .catch(err => {
+//        console.log(err);
+//        toast.error('Something went wrong');
+//      });
+//  },
+//  validationSchema: reviewSchema
+// });
+
   const upload = (e) => {
 
     const file = e.target.files[0];
@@ -76,7 +89,7 @@ const ProductDetailsPage = () => {
         <div className="max-w-3xl mx-auto p-4">
             {/* Product Details Section */}
             <div className="bg-white rounded-lg shadow-md mb-6 overflow-hidden">
-                <div className="p-6">
+                <div className="p-6 w-lg">
                     <div className="flex justify-between items-center mb-4">
                         <h1 className="text-2xl font-bold">Product Details</h1>
                         <button
@@ -169,7 +182,6 @@ const ProductDetailsPage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
 
             {/* Review section with star rating */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -244,6 +256,7 @@ const ProductDetailsPage = () => {
                         </form>
                     )}
                 </div>
+            </div>
             </div>
         </div>
     );

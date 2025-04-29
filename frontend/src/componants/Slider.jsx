@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
@@ -10,6 +9,7 @@ import "swiper/css/effect-fade";
 import Navbar from './Navbar';
 import Header from './Header';
 import Footer from './Footer';
+import Link from 'next/link';
 
 const Slider = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -74,10 +74,10 @@ const Slider = () => {
                     </p>
                   </div>
                   <div className="mt-8">
-                    <button className="relative bg-red-400 text-white overflow-hidden group py-3 px-8 rounded-full text-lg font-bold transition-all duration-300 hover:shadow-lg hover:shadow-red-400/30 hover:-translate-y-1">
+                    <Link href='/browse-product?category=sunglasses'><button className="relative bg-red-400 text-white overflow-hidden group py-3 px-8 rounded-full text-lg font-bold transition-all duration-300 hover:shadow-lg hover:shadow-red-400/30 hover:-translate-y-1">
                       <span className="relative z-10">SHOP NOW</span>
                       <span className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                    </button>
+                    </button></Link>
                   </div>
                 </div>
               </div>

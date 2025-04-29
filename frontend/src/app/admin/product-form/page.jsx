@@ -37,6 +37,11 @@ const AddProduct = () => {
     'Jwellery',
     'Sports',
     'Sunglasses',
+    'Perfume',
+    'Watches',
+    'Bags',
+    'Toys',
+    'Books',
   ];
 
   // Add sizes array
