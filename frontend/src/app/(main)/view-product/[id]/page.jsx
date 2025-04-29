@@ -208,27 +208,29 @@ const ViewProduct = () => {
                                 </div>
 
                                 {/* Size Selection */}
-                                <div className="mb-8">
-                                    <h3 className="text-sm font-medium text-gray-700 mb-3">
-                                        Size
-                                    </h3>
-                                    <div className="flex flex-wrap gap-2">
-                                        {['XS', 'S', 'M', 'L', 'XL'].map((size) => (
-                                            <button
-                                                key={size}
-                                                type="button"
-                                                onClick={() => setSelectedSize(size)}
-                                                className={`flex h-9 w-14 items-center justify-center rounded-md border ${
-                                                    selectedSize === size
-                                                        ? 'border-2 border-indigo-500 bg-indigo-50 text-indigo-600'
-                                                        : 'border-gray-200 bg-white text-gray-800 hover:border-indigo-500 hover:bg-indigo-50'
-                                                } text-sm font-medium transition duration-200`}
-                                            >
-                                                {size}
-                                            </button>
-                                        ))}
+                                {userData.size !== "One Size" && (
+                                    <div className="mb-8">
+                                        <h3 className="text-sm font-medium text-gray-700 mb-3">
+                                            Size
+                                        </h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {['XS', 'S', 'M', 'L', 'XL'].map((size) => (
+                                                <button
+                                                    key={size}
+                                                    type="button"
+                                                    onClick={() => setSelectedSize(size)}
+                                                    className={`flex h-9 w-14 items-center justify-center rounded-md border ${
+                                                        selectedSize === size
+                                                            ? 'border-2 border-indigo-500 bg-indigo-50 text-indigo-600'
+                                                            : 'border-gray-200 bg-white text-gray-800 hover:border-indigo-500 hover:bg-indigo-50'
+                                                    } text-sm font-medium transition duration-200`}
+                                                >
+                                                    {size}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
 
                             <div className="mt-6 pt-6 border-t border-gray-200">

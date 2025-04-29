@@ -4,6 +4,7 @@ const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const Order = require('../models/orderModel');
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
@@ -14,14 +15,19 @@ const razorpay = new Razorpay({
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
     const token = req.headers['x-auth-token'];
+    // console.log('token:', token);
+    
     if (!token) return res.status(401).json({ message: 'No token provided' });
-
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // console.log(decoded);
+        
         req.user = decoded;
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Invalid token' });
+        console.log(error);
+        
+        res.status(401).json({ message: 'Invalid token', error: error.message });
     }
 };
 
@@ -66,7 +72,8 @@ router.post('/verify-payment', verifyToken, async (req, res) => {
             .digest("hex");
 
         const isAuthentic = expectedSignature === razorpay_signature;
-
+        console.log(expectedSignature, razorpay_signature);
+        
         if (isAuthentic) {
             // Update order status
             await Order.findByIdAndUpdate(

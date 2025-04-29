@@ -7,7 +7,8 @@ const userSchmea = new Schema({
     address: {type: String},
     city: {type: String},
     postalCode: {type: String},
-    country: {type: String}
+    country: {type: String},
+    role: {type: String, default: 'user'}
 })
 
 module.exports = model('user', userSchmea);

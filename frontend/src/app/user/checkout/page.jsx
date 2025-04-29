@@ -74,7 +74,7 @@ export default function CheckoutPage() {
       
       // Create Razorpay order
       const orderResponse = await axios.post('http://localhost:5000/pay/create-order', {
-        amount: totalAmount * 100, // Convert to paise
+        amount: totalAmount, // Convert to paise
         currency: 'INR'
       }, {
         headers: { 'x-auth-token': token }
@@ -101,6 +101,8 @@ export default function CheckoutPage() {
           wallet: false
         },
         handler: async (response) => {
+          console.log(response);
+          
           try {
             // Verify payment
             const verifyResponse = await axios.post('http://localhost:5000/pay/verify-payment', {
@@ -115,6 +117,9 @@ export default function CheckoutPage() {
               setPaymentStatus('success');
               await createOrder(values, response);
               toast.success('Payment successful!');
+              router.push('/user/thank-you');
+              router.push('/user/orders'); // Redirect to orders page
+              // Clear cart after successful payment
               clearCart();
               router.push('/user/thank-you');
             } else {

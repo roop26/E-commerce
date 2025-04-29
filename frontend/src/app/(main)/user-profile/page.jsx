@@ -59,7 +59,8 @@ const UserProfile = () => {
         body: JSON.stringify({
           name: userData.name,
           email: userData.email,
-          phone: userData.phone
+          phone: userData.phone,
+          address: userData.address
         })
       });
       const data = await response.json();
@@ -137,6 +138,15 @@ const UserProfile = () => {
                 className="mt-1 p-2 w-full border rounded-md" 
                 value={userData?.phone || ''} 
                 onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Address</label>
+              <input 
+                type="text" 
+                className="mt-1 p-2 w-full border rounded-md" 
+                value={userData?.address || ''} 
+                onChange={(e) => setUserData({ ...userData, address: e.target.value })}
               />
             </div>
             <button 

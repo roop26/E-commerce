@@ -34,8 +34,16 @@ const Login = () => {
           console.log(result.data);
           if (result.data.token) {
             localStorage.setItem('token', result.data.token);
+            localStorage.setItem('role', result.data.role); // Store role in localStorage
             toast.success('Login successful!');
-            window.location.href = '/'; // Redirect to home page
+            
+            // Check user role and redirect accordingly
+            if (result.data.role === 'admin') {
+              window.location.href = '/admin';
+            } else {
+              window.location.href = '/';
+            }
+            
             resetForm();
           } else {
             toast.error('Invalid credentials!');

@@ -77,8 +77,8 @@ router.post('/authenticate', (req, res) => {
     Model.findOne(req.body)
     .then((result) => {
       if(result){
-        const {_id, name, email} = result;
-        const payload = {_id, name, email};
+        const {_id, name, email, role} = result;
+        const payload = {_id, name, email, role};
   
         jwt.sign(
           payload,
@@ -89,7 +89,7 @@ router.post('/authenticate', (req, res) => {
               console.log(err);
               res.status(500).json(err);
             } else {
-              res.status(200).json({ token });
+              res.status(200).json({ token, role });
             }
           }
         )
